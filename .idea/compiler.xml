@@ -23,11 +23,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bdd-with-cucumber-selenium" />
+        <module name="BDD_Framework" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.6">
-      <module name="bdd-with-cucumber-selenium" target="1.8" />
+      <module name="BDD_Framework" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
