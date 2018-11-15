@@ -11,13 +11,13 @@ public class LoginPage extends BasePage {
 		super(driver);
 	}
 	
-	@FindBy(id = "username")
+	@FindBy(name = "username")
 	private WebElement txtbx_UserName;
 	
-	@FindBy(id = "password")
+	@FindBy(name = "password")
 	private WebElement txtbx_Password;
 	
-	@FindBy(id = "login")
+	@FindBy(className = "btn-class")
 	private WebElement submitbtn_Login;
 	
 	@FindBy(id = "login-form")

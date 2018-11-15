@@ -17,34 +17,34 @@ public class ServiceHooks {
 	public static WebDriver driver;
 	public static String scenarioName;
 	
-	@Before(order=1)
+	@Before(order=0)
     public void initializeTest() {
 		System.out.println("Start the browser and Clear the cookies");
 		launchbrowser();
     }
 
-	@Before(order=0)
-    public void beforeScenarioStart(Scenario scenario) {
-        System.out.println("-----------------Start of Scenario-----------------");
-        
-        DBConnection.cleanUpCollection("users");
-	    DBConnection.cleanUpCollection("posts");
-        
-        scenarioName = scenario.getName();
-        
-        if("Successful login using valid credentials".equals(scenarioName)
-    		|| "Successful landing on Add a Blog/Post".equals(scenarioName)
-    		|| "Successful Logout".equals(scenarioName)
-    		|| "Successful creation of a Blog/Post".equals(scenarioName)
-        	|| "Successful View Profile".equals(scenarioName) 
-        	|| "Successful Edit Profile".equals(scenarioName)) { 
-    		DBConnection.createUser("users");
-        }
-        else if ("Successful Add Comment to a Blog/Post".equals(scenarioName)) {
-	        	DBConnection.createUser("users");
-	        	DBConnection.createPost("posts");
-        }
-    }
+//	@Before(order=0)
+//    public void beforeScenarioStart(Scenario scenario) {
+//        System.out.println("-----------------Start of Scenario-----------------");
+//
+//        DBConnection.cleanUpCollection("users");
+//	    DBConnection.cleanUpCollection("posts");
+//
+//        scenarioName = scenario.getName();
+//
+//        if("Successful login using valid credentials".equals(scenarioName)
+//    		|| "Successful landing on Add a Blog/Post".equals(scenarioName)
+//    		|| "Successful Logout".equals(scenarioName)
+//    		|| "Successful creation of a Blog/Post".equals(scenarioName)
+//        	|| "Successful View Profile".equals(scenarioName)
+//        	|| "Successful Edit Profile".equals(scenarioName)) {
+//    		DBConnection.createUser("users");
+//        }
+//        else if ("Successful Add Comment to a Blog/Post".equals(scenarioName)) {
+//	        	DBConnection.createUser("users");
+//	        	DBConnection.createPost("posts");
+//        }
+//    }
 	
 	@After(order=0)
     public void afterScenarioFinish() {

@@ -9,12 +9,12 @@ import org.openqa.selenium.support.PageFactory;
 
 public class BasePage {
 	
-	public static final String LOGIN_LINK = "http://localhost:8080/login";
-	public static final String REG_LINK = "http://localhost:8080/register";
-	public static final String PROFILE_LINK = "http://localhost:8080/profile";
-	public static final String BLOG_POST_LINK = "http://localhost:8080/post";
-	public static final String FORGOT_PASSWORD_LINK = "http://localhost:8080/forgot";
-	public static final String RESET_PASSWORD_LINK = "http://localhost:8080/reset/f127c9883b132c61d82dca004654d4057a8fe285";
+	public static final String LOGIN_LINK = "https://sysqa1.greenlotstest.com/";
+//	public static final String REG_LINK = "http://localhost:8080/register";
+//	public static final String PROFILE_LINK = "http://localhost:8080/profile";
+//	public static final String BLOG_POST_LINK = "http://localhost:8080/post";
+//	public static final String FORGOT_PASSWORD_LINK = "http://localhost:8080/forgot";
+//	public static final String RESET_PASSWORD_LINK = "http://localhost:8080/reset/f127c9883b132c61d82dca004654d4057a8fe285";
 	
 	WebDriver driver;
 		
@@ -23,7 +23,7 @@ public class BasePage {
 		PageFactory.initElements(driver, this);
 	}
 	
-	@FindBy(id = "alert_error")
+	@FindBy(className = "error")
 	private WebElement alert_Error_Div;
 	
 	@FindBy(id = "alert_success")
@@ -35,7 +35,7 @@ public class BasePage {
 	@FindBy(className = "panel-footer")
 	private WebElement panel_Footer_Div;
 	
-	@FindBy(id = "dashboard")
+	@FindBy(className = "dashboard")
 	private WebElement dashboard_Link;
 	
 	@FindBy(id = "add_new_post_link")
@@ -44,7 +44,7 @@ public class BasePage {
 	@FindBy(id = "add_new_post_btn")
 	private WebElement add_New_Post_Btn;
 	
-	@FindBy(id = "log_out")
+	@FindBy(xpath = ".//*[text()='Logout']")
 	private WebElement logout_Link;
 	
 	@FindBy(id = "profile")
@@ -59,25 +59,25 @@ public class BasePage {
 		navigateTo_Page(LOGIN_LINK);
 	}
 	
-	public void navigateTo_RegistrationPage() {
-		navigateTo_Page(REG_LINK);
-	}
-	
-	public void navigate_To_Add_Blog_Post_Page() {
-		navigateTo_Page(BLOG_POST_LINK);
-	}
-	
-	public void navigate_To_Profile_Page() {
-		navigateTo_Page(PROFILE_LINK);
-	}
-	
-	public void navigate_To_Forgot_Password_Page() {
-		navigateTo_Page(FORGOT_PASSWORD_LINK);
-	}
-	
-	public void navigate_To_Reset_Password_Page() {
-		navigateTo_Page(RESET_PASSWORD_LINK);
-	}
+//	public void navigateTo_RegistrationPage() {
+//		navigateTo_Page(REG_LINK);
+//	}
+//
+//	public void navigate_To_Add_Blog_Post_Page() {
+//		navigateTo_Page(BLOG_POST_LINK);
+//	}
+//
+//	public void navigate_To_Profile_Page() {
+//		navigateTo_Page(PROFILE_LINK);
+//	}
+//
+//	public void navigate_To_Forgot_Password_Page() {
+//		navigateTo_Page(FORGOT_PASSWORD_LINK);
+//	}
+//
+//	public void navigate_To_Reset_Password_Page() {
+//		navigateTo_Page(RESET_PASSWORD_LINK);
+//	}
 	
 	public String getLocationHref() {
 		return driver.getCurrentUrl();

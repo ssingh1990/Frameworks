@@ -12,7 +12,7 @@ import pages.RegistrationPage;
 
 public class Test {
 	
-	static final String exePath = "D:\\Installed Softwares\\chromedriver.exe";
+	static final String exePath = "C:\\Users\\satendras\\git\\bdd-with-cucumber-selenium\\lib\\chromedriver.exe";
 	public static WebDriver driver;
 	
 	public static void main(String[] args) throws InterruptedException {

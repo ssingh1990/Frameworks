@@ -11,13 +11,13 @@ public class RegistrationPage extends BasePage {
 		super(driver);
 	}
 	
-	@FindBy(id = "username")
+	@FindBy(name = "username")
 	private WebElement txtbx_UserName;
 	
 	@FindBy(id = "email")
 	private WebElement txtbx_Email;
 	
-	@FindBy(id = "password")
+	@FindBy(name = "password")
 	private WebElement txtbx_Password;
 
 	@FindBy(id = "confirm")
@@ -181,7 +181,7 @@ public class RegistrationPage extends BasePage {
 	}
 	
 	public void register_User() {
-		navigateTo_RegistrationPage();
+		//navigateTo_RegistrationPage();
 		enter_Username("ashis.raj");
 		enter_Email("asdf@example.com");
 		enter_Password("asdf@1234");

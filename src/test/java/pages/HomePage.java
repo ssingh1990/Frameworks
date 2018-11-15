@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class HomePage extends BasePage {
 	
-	public static final String HOME_LINK = "http://localhost:8080/";
+	public static final String HOME_LINK = "https://sysqa1.greenlotstest.com/greenlots/protectednew/admin/dashboard.jsf#";
 		
 	public HomePage(WebDriver driver) {
 		super(driver);
