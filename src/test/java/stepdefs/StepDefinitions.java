@@ -1,32 +1,28 @@
 package stepdefs;
 /*Satendra Singh*/
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.*;
+
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertFalse;
 
-import java.util.List;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import pages.CommentPage;
-import pages.ForgotPassword;
-import pages.HomePage;
-import pages.LoginPage;
-import pages.PostPage;
-import pages.ProfilePage;
-import pages.RegistrationPage;
-
 public class StepDefinitions {
-	
-	LoginPage loginPage;
+    WebDriverWait wait;
+    private String today;
+    LoginPage loginPage;
 	HomePage homePage;
 	RegistrationPage registrationPage;
-	ProfilePage profilePage;
-	PostPage postPage;
+    AddDRprogram addDRprogram;
+	ProgramManagerPage programManagerPage;
+    DashboardPage dashboardPage;
 	CommentPage commentPage;
 	ForgotPassword forgotPassword;
 	
@@ -34,8 +30,9 @@ public class StepDefinitions {
 		loginPage = new LoginPage(ServiceHooks.driver);
 		registrationPage = new RegistrationPage(ServiceHooks.driver);
 		homePage = new HomePage(ServiceHooks.driver);
-		profilePage = new ProfilePage(ServiceHooks.driver);
-		postPage = new PostPage(ServiceHooks.driver);
+        addDRprogram = new AddDRprogram(ServiceHooks.driver);
+		programManagerPage = new ProgramManagerPage(ServiceHooks.driver);
+        dashboardPage = new DashboardPage(ServiceHooks.driver);
 		commentPage = new CommentPage(ServiceHooks.driver);
 		forgotPassword = new ForgotPassword(ServiceHooks.driver);
 	}
@@ -53,6 +50,11 @@ public class StepDefinitions {
     public void i_am_a_logged_in_user() throws Throwable {
         loginPage.login();
     }
+
+    @Given("^I am a logged in network user$")
+    public void iAmAloggedInNetworkUser() throws Throwable {
+        loginPage.login();
+    }
 	
     ////////////////////////////////////
     ////// Login Page Validations //////
@@ -65,8 +67,7 @@ public class StepDefinitions {
 	
 	private void validate_Login_Page(String heading, String link) {
 		String locationHref = loginPage.getLocationHref();
-        assertEquals(LoginPage.LOGIN_LINK, locationHref);
-        
+        assertTrue("URL is not correct", locationHref.contains(LoginPage.LOGIN_LINK));
         loginPage.validate_Panel_Header_Footer(heading, link);
 	}
 	
@@ -107,8 +108,8 @@ public class StepDefinitions {
 	    case "Home":
 	    	homePage.navigateTo_Home_Page();
 	    	break; 	
-	    case "My Profile":
-	    	//profilePage.navigate_To_Profile_Page();
+	    case "Add DR Program":
+	    	addDRprogram.navigateTo_AddDRProgPage();
 	    	break;
 	    case "Add New Post":
 	    	//homePage.navigate_To_Add_Blog_Post_Page();
@@ -158,16 +159,16 @@ public class StepDefinitions {
 			registrationPage.enter_Confirm_Password(value);
 			break;
 		case "title":
-			postPage.enter_Title(value);
+			programManagerPage.enter_Title(value);
 			break;
 		case "description":
-			postPage.enter_Description(value);
+			programManagerPage.enter_Description(value);
 			break;
 		case "body":
-			postPage.enter_Body(value);
+			programManagerPage.enter_Body(value);
 			break;
 		case "author":
-			postPage.enter_Author(value);
+			programManagerPage.enter_Author(value);
 			break;
 		case "name":
 			commentPage.enter_Name(value);
@@ -190,10 +191,11 @@ public class StepDefinitions {
 			registrationPage.click_On_Register_Button();
 			break;
 		case "Update Profile":
-	    	profilePage.click_On_Update_Profile_Button();
+            addDRprogram.click_On_Update_Profile_Button();
 			break;
-		case "Add Post":
-	    	postPage.click_On_Add_Post_Button();
+		case "Create":
+            Thread.sleep(5000);
+            addDRprogram.click_On_create_Button();
 			break;	
 		case "Add Comment":
 			commentPage.click_On_Add_Comment_Button();
@@ -213,12 +215,12 @@ public class StepDefinitions {
     
     @Then("^I should be successfully logged out$")
     public void i_should_be_successfully_logged_out() throws Throwable {
-    	validate_Login_Page("Sign In", "Or Sign Up");
+    	validate_Login_Page("Forgot password?", "Driver FAQ");
     }
     
     @Then("^I should be successfully registered$")
     public void i_should_be_successfully_registered() throws Throwable {
-    	validate_Home_Page("Dashboard", "Logout");
+    	validate_Home_Page("DashboardPage", "Logout");
     }
         
     @Then("^I should land on the \"([^\"]*)\" page$")
@@ -226,20 +228,19 @@ public class StepDefinitions {
     	String locationHref = "<not found>";
     	switch (page) {
     	case "Login":
-				validate_Login_Page("Sign In", "Or Sign Up");
+				validate_Login_Page("Forgot password?", "Driver FAQ");
 				break;
 			case "Home":
 				validate_Home_Page("Dashboard", "Logout");
 				break;
-			case "My Profile":
-				locationHref = profilePage.getLocationHref();
-		       // assertEquals(ProfilePage.PROFILE_LINK, locationHref);
+			case "Add DR Program":
+                validate_Add_DR_Program();
 				break;
-			case "Add New Post":
-				validate_Add_New_Post_Page();
+			case "Site Controllers DashboardPage":
+                validate_Site_Controllers_Dashboard();
 				break;
-			case "Blog Details":
-				validate_Post_Details_Page();
+			case "Program Manager":
+                validate_Program_Manager();
 				break;
 			case "Forgot Password":
 				validate_Forgot_Password_Page("Forgot Password", "Or Sign In");
@@ -257,23 +258,38 @@ public class StepDefinitions {
     private void validate_Home_Page(String link1, String link2) {
     	String locationHref = homePage.getLocationHref();
         assertTrue("URL is not match", HomePage.HOME_LINK.contains(locationHref));
-        
     	String dashBoardLink = homePage.get_Dashboard_Link().getText();
     	String logOutLink = homePage.get_Logout_Link().getText();
     	assertEquals(link1, dashBoardLink);
     	assertEquals(link2, logOutLink);
     }
     
-    private void validate_Add_New_Post_Page() {
-    	String locationHref = postPage.getLocationHref();
-        assertEquals(PostPage.POST_LINK, locationHref);
+    private void validate_Site_Controllers_Dashboard() {
+    	String locationHref = dashboardPage.getLocationHref();
+        assertEquals(dashboardPage.Dashboard_LINK, locationHref);
     }
     
     private void validate_Post_Details_Page() {
-    	String locationHref = postPage.getLocationHref();
-        assertTrue(locationHref.contains(PostPage.POST_LINK));
+    	String locationHref = programManagerPage.getLocationHref();
+        assertTrue(locationHref.contains(ProgramManagerPage.LINK));
     }
-    
+
+    private void validate_Program_Manager() throws InterruptedException {
+        Thread.sleep(1000);
+        String locationHref = programManagerPage.getLocationHref();
+        String currentURL = programManagerPage.LINK;
+        assertEquals(locationHref, currentURL);
+        assertTrue("Create DR Program button is not displayed", programManagerPage.create_DR_Button().isDisplayed());
+    }
+
+    private void validate_Add_DR_Program() throws InterruptedException {
+        Thread.sleep(1000);
+        String locationHref = addDRprogram.getLocationHref();
+        String currentURL = addDRprogram.LINK;
+        assertEquals(locationHref, currentURL);
+        assertTrue("Header is not displayed", addDRprogram.get_Panel_Heading().isDisplayed());
+    }
+
     private void validate_Forgot_Password_Page(String heading, String link) {
 		String locationHref = forgotPassword.getLocationHref();
        // assertEquals(LoginPage.FORGOT_PASSWORD_LINK, locationHref);
@@ -287,7 +303,8 @@ public class StepDefinitions {
     	String message = "<Not Found>";
     	
     	switch (msgType) {
-			case "error":			
+			case "error":
+                loginPage.click_On_LogIn_Button();
 				message = loginPage.get_Alert_Error_Div().getText();
 		    	break;
 			case "success":
@@ -434,7 +451,7 @@ public class StepDefinitions {
         	assertFalse(isRegisterNowButtonEnabled);
     		break;
     	case "Update Profile":
-        	boolean isUpdateProfileNowButtonEnabled = profilePage.is_Update_Profile_Button_Enabled();
+        	boolean isUpdateProfileNowButtonEnabled = addDRprogram.is_Update_Profile_Button_Enabled();
         	assertFalse(isUpdateProfileNowButtonEnabled);
     		break;
 		default:
@@ -466,7 +483,7 @@ public class StepDefinitions {
     			break;
     		case "Update Profile":
     			try {
-    	        	profilePage.submit_Form();
+                    addDRprogram.submit_Form();
     	        }
     	        catch(Exception e) {
     	        	errorMsg = e.getMessage().trim();
@@ -496,13 +513,19 @@ public class StepDefinitions {
 					homePage.click_On_Logout_link();
 	    		}
 	    		else if(link.equalsIgnoreCase("My Profile")) {
-					homePage.click_On_Profile_link();
+					//homePage.click_On_Profile_link();
 	    		}
-	    		else if(link.equalsIgnoreCase("Add New Post")) {
-	    			homePage.click_On_Add_New_Post_link();
+                else if(link.equalsIgnoreCase("Flex Charge Manager")) {
+                    homePage.flex_charge_manager();
+                }
+                    else if(link.equalsIgnoreCase("Demand Response")) {
+	    			homePage.demand_response();
 	    		}
+                else if(link.equalsIgnoreCase("Program Manager")) {
+                homePage.program_manager();
+                }
 	    		if(link.equalsIgnoreCase("Blog listing")) {
-					postPage.click_On_Post_Listing_Link();
+					programManagerPage.click_On_Post_Listing_Link();
 	    		}
 	    		break;
     	default:
@@ -510,57 +533,78 @@ public class StepDefinitions {
     	}
     }
 
+    @When("^I click on \"([^\"]*)\" button on the \"([^\"]*)\" page$")
+    public void iClickOnButtonOnThePage(String button, String page) throws Throwable {
+        switch(page) {
+            case "Program Manager":
+                if(button.equalsIgnoreCase("CreateDrProgram")) {
+                    programManagerPage.click_On_CreateDrProg_Button();
+                }
+                else if(button.equalsIgnoreCase("Program Name")) {
+                   // homePage.click_On_Profile_link();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     @Then("^I should see \"([^\"]*)\" heading on the Profile page$")
     public void i_should_see_heading_on_the_profile_page(String pageHeading) throws Throwable {
-    	String profileHeading = profilePage.get_Profile_Heading();
+    	String profileHeading = addDRprogram.get_Profile_Heading();
     	assertEquals(pageHeading, profileHeading);
     }
 
     @Then("^\"([^\"]*)\" link should be active on the Profile page$")
     public void link_should_be_active_on_the_Profile_page(String arg1) throws Throwable {
-        assertTrue( profilePage.is_Profile_Link_active());
+        //assertTrue( addDRprogram.is_Profile_Link_active());
     }
     
     @Then("^\"([^\"]*)\" field should be prepopulated and set as \"([^\"]*)\" on the Profile page$")
     public void field_should_be_prepopulated_and_set_as_on_the_Profile_page(String field, String attrib) throws Throwable {
-        String userName = profilePage.get_Username().getText();
+        String userName = addDRprogram.get_Username().getText();
         assertTrue(userName != null || userName != "");
     }
 
     @Then("^\"([^\"]*)\" field should be prepopulated on the Profile page$")
     public void field_should_be_prepopulated_on_the_Profile_page(String field) throws Throwable {
-    	String email = profilePage.get_Email().getText();
+    	String email = addDRprogram.get_Email().getText();
         assertTrue(email != null || email != "");    
     }
     
     @When("^I fill in First Name as \"([^\"]*)\"$")
     public void i_fill_in_First_Name_as(String firstName) throws Throwable {
-        profilePage.enter_First_Name(firstName);
+        addDRprogram.enter_First_Name(firstName);
     }
 
-    @When("^I fill in Last Name as \"([^\"]*)\"$")
-    public void i_fill_in_Last_Name_as(String lastName) throws Throwable {
-        profilePage.enter_Last_Name(lastName);
+    @When("^I fill in program Type as \"([^\"]*)\"$")
+    public void i_fill_in_Program_Type_as(String programyype) throws Throwable {
+        addDRprogram.enter_Program_Type(programyype);
     }
 
-    @When("^I fill in Age as \"([^\"]*)\"$")
-    public void i_fill_in_Age_as(String age) throws Throwable {
-        profilePage.enter_Age(age);
+    @When("^I fill in Utility as \"([^\"]*)\"$")
+    public void iFillInUtilityAs(String utility) throws Throwable {
+        addDRprogram.enter_Utility(utility);
     }
 
-    @When("^I fill in Gender as \"([^\"]*)\"$")
-    public void i_fill_in_Gender_as(String gender) throws Throwable {
-    	profilePage.enter_Gender(gender);
+    @When("^I select start date as \"([^\"]*)\"$")
+    public void iSelectstartDate(String date) throws Throwable {
+        addDRprogram.enter_Date(date);
+    }
+
+    @When("^I select end date as \"([^\"]*)\"$")
+    public void iSelectendDate(String date) throws Throwable {
+        addDRprogram.enter_End_Date(date);
     }
 
     @When("^I fill in Address as \"([^\"]*)\"$")
     public void i_fill_in_Address_as(String address) throws Throwable {
-        profilePage.enter_Address(address);
+        addDRprogram.enter_Address(address);
     }
 
-    @When("^I fill in Website as \"([^\"]*)\"$")
-    public void i_fill_in_Website_as(String website) throws Throwable {
-        profilePage.enter_Website(website);
+    @When("^I select status \"([^\"]*)\"$")
+    public void iSelectStatus(String status) throws Throwable {
+        addDRprogram.select_status(status);
     }
     
     @Given("^I see a blog listing on the Homepae$")

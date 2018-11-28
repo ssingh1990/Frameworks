@@ -2,7 +2,7 @@
 Feature: Add Blog/Post
   As a Looegd in User of the application
   I want to write a Blog/Post successfully
-  
+
   Background: User is logged in and is on Homepage
   	Given I am a logged in user
   	

@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BDD_Framework.iml" filepath="$PROJECT_DIR$/BDD_Framework.iml" />
-      <module fileurl="file://$PROJECT_DIR$/BDD_Framework.iml" filepath="$PROJECT_DIR$/BDD_Framework.iml" />
     </modules>
   </component>
 </project>

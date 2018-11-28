@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.test</groupId>
-	<artifactId>bdd-with-cucumber-selenium</artifactId>
+	<artifactId>BDD_Framework</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
 	<properties>
@@ -100,6 +100,16 @@
 		    <version>4.12</version>
 		    <scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>com.vimalselvam</groupId>
+            <artifactId>cucumber-extentsreport</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>3.1.2</version>
+        </dependency>
 		<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
 		<dependency>
 		    <groupId>org.mongodb</groupId>
@@ -168,9 +178,9 @@
 			        </execution>
 			    </executions>
 			    <configuration>
-			    	<projectName>bdd-with-cucumber-selenium</projectName>
+			    	<projectName>BDD_Framework</projectName>
 			        <sourceJsonReportDirectory>${project.build.directory}\cucumber-reports\json-reports</sourceJsonReportDirectory>
-			        <generatedHtmlReportDirectory>${project.build.directory}\cucumber-reports\cluecumber-report</generatedHtmlReportDirectory>
+			        <generatedHtmlReportDirectory>${project.build.directory}\cucumber-reports\cucumber-report</generatedHtmlReportDirectory>
 			    </configuration>    
 			</plugin>
         </plugins>

@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class CommentPage extends PostPage {
+public class CommentPage extends ProgramManagerPage {
 
 	public CommentPage(WebDriver driver) {
 		super(driver);

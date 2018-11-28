@@ -97,8 +97,8 @@ public class LoginPage extends BasePage {
 	
 	public void login() {
 		navigateTo_LoginPage();
-		enter_Username("asdf.asdf");
-		enter_Password("Asdf@1234");
+		enter_Username("satendra@greenlots.com");
+		enter_Password("ss");
 		click_On_LogIn_Button();
 	}
 }

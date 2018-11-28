@@ -4,11 +4,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class PostPage extends HomePage {
-	
-	public static final String POST_LINK = "http://localhost:8080/post";
-	
-	public PostPage(WebDriver driver) {
+public class DashboardPage extends HomePage {
+
+	public static final String Dashboard_LINK = "https://sysqa1.greenlotstest.com/skyx/site-controllers/dashboard";
+
+	public DashboardPage(WebDriver driver) {
 		super(driver);
 	}
 	

@@ -1,7 +1,5 @@
 @Logout
 Feature: Logout
-  As a Looegd in User of the application
-  I want to Logout successfully
   
   Background: User is logged in and is on Homepage
   	Given I am a logged in user
@@ -14,4 +12,4 @@ Feature: Logout
     And I should land on the "Login" page
     When I navigate to the "Home" page
     Then I should be redirected on the "Login" page
-    And I should see "error" message as "You must be logged in first!"
+    And I should see "error" message as "Invalid username and password."
